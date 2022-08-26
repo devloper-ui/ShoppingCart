@@ -28,9 +28,9 @@ public class Cart {
 	public Product getProductById(int id) {
 		Product product = null;
 		try {
-			product = products.stream().filter(prod -> prod.getId() == id).findFirst().get();
+			product = products.stream().filter(prod -> prod.getId() == id).findFirst().orElse(null);
 		} catch (Exception e) {
-			System.out.println("Exception in getProductById method of Cart class" + e);
+			e.printStackTrace();
 		}
 		return product;
 
