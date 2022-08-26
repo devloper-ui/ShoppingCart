@@ -8,10 +8,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.dev_loper.ShoppingCart.Models.Cart;
+import com.dev_loper.ShoppingCart.Models.Product;
 
 @Controller
 public class ShoppingCartController {
@@ -25,12 +29,19 @@ public class ShoppingCartController {
 	}
 	
 	@GetMapping("/list")//list all available products.
-	public String list(ModelMap model) {
+	@ResponseBody
+	public List<Product> list(ModelMap model) {
 		model.put("products",cart.getAllProducts());
-		return "list";
+		return cart.getAllProducts();
 	}
-		
-	@GetMapping("/search")//search products according to type,category,name,price(min,max)
+	
+//	@GetMapping("/search")
+//	public String listBySearch(@RequestParam String type, ModelMap model) {
+//		model.put("products", cart.searchByCategory(type));
+//		return "list";
+//	}
+	
+	@GetMapping("/search")
 	public String listBySearch(@RequestParam Map<String,String> requestParams, ModelMap model) {
 		String type = requestParams.get("type")==null ? "" : requestParams.get("type");
 		String category = requestParams.get("category")==null ? "" : requestParams.get("category");
@@ -40,5 +51,25 @@ public class ShoppingCartController {
 		String[] params = {category,type,name,min,max};
 		model.put("products", cart.searchByCategory(params));
 		return "list";
+	}
+	
+	@GetMapping("/search/{id}")
+	@ResponseBody
+	public Product getProduct(@PathVariable int id) {
+		return cart.getProductById(id);
+	}
+	
+//	@GetMapping("/addToCart")
+//	@ResponseBody
+//	public  displayCart() {
+//		
+//		return "";
+//	}
+	
+	@PostMapping("/list")
+	@ResponseBody
+	public Product addToCart(@RequestBody Product product) {	
+		cart.addProduct(product);
+		return product;
 	}
 }

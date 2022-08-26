@@ -24,13 +24,28 @@ public class Cart {
 		return products;
 	}
 	
-	public long getTotalPrice(List<Product> products) {
-		long totalPrice = 0;
-		for(Product product : products) {
-			totalPrice += product.getPrice();
+	public Product getProductById(int id) {
+		Product product = null;
+		try {
+			product = products.stream().filter(e->e.getId()==id).findFirst().get();	
+		}catch (Exception e) {
+			System.out.println("Exception in getProductById method of Cart class"+e);
 		}
-		return totalPrice;
+		return product;
+		
 	}
+	
+	public Product addProduct(Product product) {
+		products.add(product);
+		return product;
+	}
+//	public long getTotalPrice(List<Product> products) {
+//		long totalPrice = 0;
+//		for(Product product : products) {
+//			totalPrice += product.getPrice();
+//		}
+//		return totalPrice;
+//	}
 	
 	public List<Product> searchByCategory(String[] keys){
 		List<Product> listOfCateogory = new ArrayList<Product>();
