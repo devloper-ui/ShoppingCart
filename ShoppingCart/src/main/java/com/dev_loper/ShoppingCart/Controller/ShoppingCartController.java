@@ -19,14 +19,14 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.dev_loper.ShoppingCart.Models.Cart;
 import com.dev_loper.ShoppingCart.Models.Product;
+import com.dev_loper.ShoppingCart.Services.ProductService;
 
 @Controller
 public class ShoppingCartController {
 
 	@Autowired
-	Cart cart;
+	ProductService cart;
 
 	@GetMapping("/demo")
 	public String demo() {
