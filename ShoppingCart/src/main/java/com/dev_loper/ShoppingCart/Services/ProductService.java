@@ -1,3 +1,6 @@
+/**
+ * Add, Remove, Update, Delete Products. For "Seller".
+ */
 package com.dev_loper.ShoppingCart.Services;
 
 import java.util.ArrayList;
