@@ -19,7 +19,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.dev_loper.ShoppingCart.Models.Item;
 import com.dev_loper.ShoppingCart.Models.Product;
+import com.dev_loper.ShoppingCart.Services.CartService;
 import com.dev_loper.ShoppingCart.Services.ProductService;
 
 @Controller
@@ -27,6 +29,9 @@ public class ShoppingCartController {
 
 	@Autowired
 	ProductService cart;
+	
+	@Autowired
+	CartService product;
 
 	@GetMapping("/demo")
 	public String demo() {
@@ -118,5 +123,11 @@ public class ShoppingCartController {
 			e.printStackTrace();
 			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
 		}
+	}
+	
+	@GetMapping("/cart")
+	@ResponseBody
+	public List<Item> showCart(){
+		return product.showCart();
 	}
 }

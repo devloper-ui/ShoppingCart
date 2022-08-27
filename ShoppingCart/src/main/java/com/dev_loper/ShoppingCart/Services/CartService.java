@@ -3,15 +3,27 @@
  */
 package com.dev_loper.ShoppingCart.Services;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+
+import org.springframework.stereotype.Component;
 
 import com.dev_loper.ShoppingCart.Models.Item;
 import com.dev_loper.ShoppingCart.Models.Product;
 
-class CartService {
+@Component
+public class CartService {
 
-	HashMap<Integer, Item> items = new HashMap<>();
+	public static HashMap<Integer, Item> items = new HashMap<>();
+
+	public static Map<Integer, Product> itemss = new HashMap<Integer, Product>();
+
+	static {
+		items.put(1, new Item(new Product(1, "Redmi k10", "Smartphones", "Electronics", 10000L),1) );
+		items.put(2, new Item(new Product(2, "Levis winter ware", "T-shirts", "Clothing", 3500L),1) );
+	}
 
 	public Product getProductById(int id) {
 		for (Map.Entry<Integer, Item> itemPair : items.entrySet()) {
@@ -55,21 +67,31 @@ class CartService {
 		return total;
 	}
 
-	public String viewCart() {
-		if (items.isEmpty()) {
-			return "Cart is empty";
-		}
-
-		String itemizedList = "";
-		int cart_total = getTotalPrice();
-
+	public List<Item> showCart() {
+		List<Item> cartItems = new ArrayList<Item>();
 		for (Map.Entry<Integer, Item> itemPair : items.entrySet()) {
-			Item item = itemPair.getValue();
-			itemizedList += (item.getItemInfo());
+			cartItems.add(itemPair.getValue());
 		}
-
-		return itemizedList + "\n Total Amount : Rs. " + (cart_total) + '\n';
+		return cartItems;
 	}
+
+//	public String viewCart() {
+//		if (items.isEmpty()) {
+//			return "Cart is empty";
+//		}
+//		System.out.println("In view cart 82");
+//
+//		String itemizedList = "";
+//		int cart_total = getTotalPrice();
+//
+//		for (Map.Entry<Integer, Item> itemPair : items.entrySet()) {
+//			Item item = itemPair.getValue();
+//			cartItems.add(item);
+//			//itemizedList += (item.getItemInfo());
+//		}
+//		System.out.println("In view cart 91");
+//		return itemizedList + "\n Total Amount : Rs. " + (cart_total) + '\n';
+//	}
 
 	public boolean isEmpty() {
 		return items.isEmpty();
