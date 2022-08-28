@@ -3,7 +3,6 @@ package com.dev_loper.ShoppingCart.Controller;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import java.util.ArrayList;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -28,21 +27,21 @@ import com.dev_loper.ShoppingCart.Services.ProductService;
 public class ShoppingCartController {
 
 	@Autowired
-	ProductService cart;
-	
-	@Autowired
-	CartService product;
+	ProductService product;
 
-	@GetMapping("/demo")
-	public String demo() {
-		return "demo";
-	}
+	@Autowired
+	CartService cart;
+
+//	@GetMapping("/demo")
+//	public String demo() {
+//		return "demo";
+//	}
 
 	@GetMapping("/list") // list all available products.
 	@ResponseBody
 	public ResponseEntity<List<Product>> list(ModelMap model) {
-		model.put("products", cart.getAllProducts());
-		List<Product> products = cart.getAllProducts();
+		model.put("products", product.getAllProducts());
+		List<Product> products = product.getAllProducts();
 
 		if (products.size() <= 0) {
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
@@ -65,18 +64,18 @@ public class ShoppingCartController {
 		String min = requestParams.get("min") == null ? "" : requestParams.get("min");
 		String max = requestParams.get("max") == null ? "" : requestParams.get("max");
 		String[] params = { category, type, name, min, max };
-		model.put("products", cart.searchByCategory(params));
+		model.put("products", product.searchByCategory(params));
 		return "list";
 	}
 
 	@GetMapping("/search/{id}")
 	@ResponseBody
 	public ResponseEntity<Product> getProduct(@PathVariable int id) {
-		Product product = cart.getProductById(id);
+		Product prod = product.getProductById(id);
 		if (product == null) {
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
 		}
-		return ResponseEntity.of(Optional.of(product));
+		return ResponseEntity.of(Optional.of(prod));
 	}
 
 //	@GetMapping("/addToCart")
@@ -88,11 +87,11 @@ public class ShoppingCartController {
 
 	@PostMapping("/list")
 	@ResponseBody
-	public ResponseEntity<Product> addToList(@RequestBody Product product) {
+	public ResponseEntity<Product> addToList(@RequestBody Product listProduct) {
 		Product p = null;
-		p = cart.addProduct(product);
+		// p = product.addProduct(listProduct);
 		try {
-			p = cart.addProduct(product);
+			p = product.addProduct(listProduct);
 			return ResponseEntity.of(Optional.of(p));
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -104,7 +103,7 @@ public class ShoppingCartController {
 	@ResponseBody
 	public ResponseEntity<Void> removeFromList(@PathVariable int id) {
 		try {
-			cart.removeProductById(id);
+			product.removeProductById(id);
 			return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -114,41 +113,53 @@ public class ShoppingCartController {
 
 	@PutMapping("/list/{id}")
 	@ResponseBody
-	public ResponseEntity<Product> updateFromList(@RequestBody Product product, @PathVariable int id) {
-		
+	public ResponseEntity<Product> updateFromList(@RequestBody Product listProduct, @PathVariable int id) {
+
 		try {
-			cart.updateProduct(product, id);
-			return ResponseEntity.ok().body(product);
+			product.updateProduct(listProduct, id);
+			return ResponseEntity.ok().body(listProduct);
 		} catch (Exception e) {
 			e.printStackTrace();
 			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
 		}
 	}
-	
+
 	@GetMapping("/cart")
 	@ResponseBody
-	public List<Item> showCart(){
-		return product.showCart();
+	public ResponseEntity<List<Item>> showCart() {		
+		List<Item> cartItems = cart.showCart();
+		
+		if(cartItems.size()<=0) {
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+		}else {
+			return ResponseEntity.of(Optional.of(cartItems));
+		}
 	}
-	
+
 	@PostMapping("/cart")
 	@ResponseBody
-	public Product addToCart(@RequestBody Product cartProduct) {
+	public ResponseEntity<Product> addToCart(@RequestBody Product cartProduct) {
 		Product prod = null;
-		
-		prod = product.addProduct(cartProduct);
-		
-		return prod;
+		try {
+			prod = cart.addProduct(cartProduct);
+			return ResponseEntity.of(Optional.of(prod));
+		} catch (Exception e) {
+			e.printStackTrace();
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+		}
 	}
-	
+
 	@DeleteMapping("/cart/{id}")
 	@ResponseBody
-	public Product removeFromCart(@PathVariable int id) {
+	public ResponseEntity<Product> removeFromCart(@PathVariable int id) {
 		Product prod = null;
-		
-		prod = product.removeProduct(id);
-		
-		return prod;
+		try {
+			prod = cart.removeProduct(id);
+			return ResponseEntity.of(Optional.of(prod));
+		} catch (Exception e) {
+			e.printStackTrace();
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+		}
 	}
 
 }

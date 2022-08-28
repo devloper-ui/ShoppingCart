@@ -18,8 +18,6 @@ public class CartService {
 
 	public static HashMap<Integer, Item> items = new HashMap<>();
 
-	public static Map<Integer, Product> itemss = new HashMap<Integer, Product>();
-
 	static {
 		items.put(1, new Item(new Product(1, "Redmi k10", "Smartphones", "Electronics", 10000L), 1));
 		items.put(2, new Item(new Product(2, "Levis winter ware", "T-shirts", "Clothing", 3500L), 1));
