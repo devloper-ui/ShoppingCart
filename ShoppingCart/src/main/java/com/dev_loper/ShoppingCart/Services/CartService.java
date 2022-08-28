@@ -21,8 +21,8 @@ public class CartService {
 	public static Map<Integer, Product> itemss = new HashMap<Integer, Product>();
 
 	static {
-		items.put(1, new Item(new Product(1, "Redmi k10", "Smartphones", "Electronics", 10000L),1) );
-		items.put(2, new Item(new Product(2, "Levis winter ware", "T-shirts", "Clothing", 3500L),1) );
+		items.put(1, new Item(new Product(1, "Redmi k10", "Smartphones", "Electronics", 10000L), 1));
+		items.put(2, new Item(new Product(2, "Levis winter ware", "T-shirts", "Clothing", 3500L), 1));
 	}
 
 	public Product getProductById(int id) {
@@ -34,13 +34,14 @@ public class CartService {
 		return null;
 	}
 
-	public void addProduct(Product product) {
+	public Product addProduct(Product product) {
 		if (!items.containsKey(product.getId())) {
 			Item newItem = new Item(product, 1);
 			items.put(product.getId(), newItem);
 		} else {
 			items.get(product.getId()).setQuantity(items.get(product.getId()).getQuantity() + 1);
 		}
+		return product;
 	}
 
 	public Product removeProduct(int id) {
@@ -53,7 +54,11 @@ public class CartService {
 		if (!items.containsKey(product.getId())) {
 			product = null;
 		} else {
-			items.get(product.getId()).setQuantity(items.get(product.getId()).getQuantity() - 1);
+			if (items.get(product.getId()).getQuantity() == 1) {
+				items.remove(product.getId());
+			} else {
+				items.get(product.getId()).setQuantity(items.get(product.getId()).getQuantity() - 1);
+			}
 		}
 		return product;
 	}
@@ -74,24 +79,6 @@ public class CartService {
 		}
 		return cartItems;
 	}
-
-//	public String viewCart() {
-//		if (items.isEmpty()) {
-//			return "Cart is empty";
-//		}
-//		System.out.println("In view cart 82");
-//
-//		String itemizedList = "";
-//		int cart_total = getTotalPrice();
-//
-//		for (Map.Entry<Integer, Item> itemPair : items.entrySet()) {
-//			Item item = itemPair.getValue();
-//			cartItems.add(item);
-//			//itemizedList += (item.getItemInfo());
-//		}
-//		System.out.println("In view cart 91");
-//		return itemizedList + "\n Total Amount : Rs. " + (cart_total) + '\n';
-//	}
 
 	public boolean isEmpty() {
 		return items.isEmpty();

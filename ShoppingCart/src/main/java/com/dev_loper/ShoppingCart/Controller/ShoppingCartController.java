@@ -130,4 +130,25 @@ public class ShoppingCartController {
 	public List<Item> showCart(){
 		return product.showCart();
 	}
+	
+	@PostMapping("/cart")
+	@ResponseBody
+	public Product addToCart(@RequestBody Product cartProduct) {
+		Product prod = null;
+		
+		prod = product.addProduct(cartProduct);
+		
+		return prod;
+	}
+	
+	@DeleteMapping("/cart/{id}")
+	@ResponseBody
+	public Product removeFromCart(@PathVariable int id) {
+		Product prod = null;
+		
+		prod = product.removeProduct(id);
+		
+		return prod;
+	}
+
 }
