@@ -12,6 +12,8 @@ import org.springframework.stereotype.Component;
 
 import com.dev_loper.ShoppingCart.Models.Item;
 import com.dev_loper.ShoppingCart.Models.Product;
+import com.dev_loper.ShoppingCart.Models.Smartphones;
+import com.dev_loper.ShoppingCart.Models.Tshirts;
 
 @Component
 public class CartService {
@@ -19,8 +21,8 @@ public class CartService {
 	public static HashMap<Integer, Item> items = new HashMap<>();
 
 	static {
-		items.put(1, new Item(new Product(1, "Redmi k10", "Smartphones", "Electronics", 10000L), 1));
-		items.put(2, new Item(new Product(2, "Levis winter ware", "T-shirts", "Clothing", 3500L), 1));
+		items.put(1, new Item(new Product(1, "Redmi k10", new Smartphones("Smartphones", "6.5 inches", "sanpdragon 680", "4 GB","32 GB", "64MP + 2MP"), "Electronics", 10000L), 1));
+		items.put(2, new Item(new Product(2, "Levis winter ware", new Tshirts("Tshirts", "red", "XL"), "Clothing", 3500L), 1));
 	}
 
 	public Product getProductById(int id) {

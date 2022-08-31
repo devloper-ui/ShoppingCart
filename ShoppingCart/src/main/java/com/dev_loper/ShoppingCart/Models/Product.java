@@ -4,11 +4,11 @@ public class Product {
 
 	private int id;
 	private String name;
-	private String type;
+	private Type type;
 	private String category;
 	private long price;
 
-	public Product(int id, String name, String type, String category, long price) {
+	public Product(int id, String name, Type type, String category, long price) {
 		super();
 		this.id = id;
 		this.name = name;
@@ -33,11 +33,11 @@ public class Product {
 		this.name = name;
 	}
 
-	public String getType() {
+	public Type getType() {
 		return type;
 	}
 
-	public void setType(String type) {
+	public void setType(Type type) {
 		this.type = type;
 	}
 

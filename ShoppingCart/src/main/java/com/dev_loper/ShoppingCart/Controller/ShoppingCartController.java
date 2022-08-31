@@ -89,8 +89,8 @@ public class ShoppingCartController {
 	@ResponseBody
 	public ResponseEntity<Product> addToList(@RequestBody Product listProduct) {
 		Product p = null;
-		// p = product.addProduct(listProduct);
 		try {
+			System.out.println(listProduct.getType().getTypeName());
 			p = product.addProduct(listProduct);
 			return ResponseEntity.of(Optional.of(p));
 		} catch (Exception e) {
@@ -111,7 +111,7 @@ public class ShoppingCartController {
 		}
 	}
 
-	@PutMapping("/list/{id}")
+	@PutMapping("/list/{id}") //need to work in product class as have added jackson and type class
 	@ResponseBody
 	public ResponseEntity<Product> updateFromList(@RequestBody Product listProduct, @PathVariable int id) {
 

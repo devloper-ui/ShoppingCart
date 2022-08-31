@@ -12,18 +12,21 @@ import java.util.stream.Collectors;
 import org.springframework.stereotype.Component;
 
 import com.dev_loper.ShoppingCart.Models.Product;
+import com.dev_loper.ShoppingCart.Models.Smartphones;
+import com.dev_loper.ShoppingCart.Models.Tshirts;
+import com.dev_loper.ShoppingCart.Models.Washingmachines;
 
 @Component
 public class ProductService {
 	private static List<Product> products = new ArrayList<Product>();
-
+//how to get class name in typename
 	static {
 		// id,name,type,category,price
-		products.add(new Product(1, "Redmi k10", "Smartphones", "Electronics", 10000L));
-		products.add(new Product(2, "Levis winter ware", "T-shirts", "Clothing", 3500L));
-		products.add(new Product(3, "LG P300", "Washing Machine", "Electronics", 18000L));
-		products.add(new Product(4, "Redmi k10 plus", "Smartphones", "Electronics", 12000L));
-		products.add(new Product(5, "Realme 9 pro plus", "Smartphones", "Electronics", 25000L));
+		products.add(new Product(1, "Redmi k10", new Smartphones("Smartphones", "6.5 inches", "sanpdragon 680", "4 GB","32 GB", "64MP + 2MP"), "Electronics", 10000L));
+		products.add(new Product(2, "Levis winter ware", new Tshirts("Tshirts", "red", "XL"), "Clothing", 3500L));
+		products.add(new Product(3, "LG P300", new Washingmachines("Washingmachine", "P300", "cross-functional", "4 stars", "6kg", "Normal spin", "800rpm"), "Electronics", 18000L));
+		products.add(new Product(4, "Redmi k10 plus", new Smartphones("Smartphones", "6.5 inches", "MediaTek helio G90",  "4 GB","64 GB", "64MP + 2MP"), "Electronics", 12000L));
+		products.add(new Product(5, "Realme 9 pro plus", new Smartphones("Smartphones", "6.5 inches", "sanpdragon 778G",  "4 GB","32 GB", "64MP + 12MP + 2MP"), "Electronics", 25000L));
 	}
 
 	public List<Product> getAllProducts() {
@@ -100,7 +103,7 @@ public class ProductService {
 		if (!keys[1].equals("")) {
 			for (Product product : products) {
 				Pattern pattern = Pattern.compile(keys[1].toLowerCase());
-				Matcher match = pattern.matcher(product.getType().toLowerCase());
+				Matcher match = pattern.matcher(product.getType().getTypeName().toLowerCase());
 				if (match.find()) {
 					listOfType.add(product);
 				}
