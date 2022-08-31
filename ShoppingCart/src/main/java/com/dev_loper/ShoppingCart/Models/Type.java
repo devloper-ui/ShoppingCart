@@ -4,8 +4,9 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeInfo.As;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 
-@JsonTypeInfo (use = JsonTypeInfo.Id.NAME, include = As.PROPERTY, property = "typeName")
-//picking up typename as a name for object to be created like smartphones, laptop etc; 
+@JsonTypeInfo (use = JsonTypeInfo.Id.NAME, include = As.PROPERTY, property = "typeName", visible=true)
+//picking up typename as a name for object to be created like smartphones, laptop etc; visible=true
+//because the typeName will be shown null without it.
 @JsonSubTypes ({@JsonSubTypes.Type (value = Smartphones.class, name = "Smartphones"), @JsonSubTypes.Type (value = Tshirts.class, name = "Tshirts"), @JsonSubTypes.Type (value = Washingmachines.class, name = "Washingmachines")})
 //name must be an exact match of child class names.
 public class Type {
